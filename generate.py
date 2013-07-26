@@ -1,4 +1,6 @@
 from matplotlib import pyplot
+import logging
+logging.basicConfig(level=logging.INFO)
 
 def refresh():
     pyplot.figure()
@@ -62,13 +64,13 @@ def save(outDir='.', name=None):
         name = datetime.datetime.today().strftime('%Y%m%d%H%M%S.%f')
     import os
     name = '%s.png' % name
-    print ('saving %s...' % name),
+    logging.info('saving %s...' % name)
     name = os.path.join(outDir, name)
     if os.path.isfile(name):
-        print 'already there'
+        logging.info('already there')
     else:
         pyplot.savefig(os.path.join(outDir, name))
-        print 'done'
+        logging.info('done')
 
 def main():
     import optparse
