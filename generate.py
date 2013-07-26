@@ -18,7 +18,7 @@ def refresh():
 def getPathName(path):
     return ''.join(['%d%d' % point for point in path])
 
-def drawOne(path, savePaths=False):
+def drawOne(path, outDir=None):
     refresh()
     for i in xrange(1, len(path)):
         x = path[i-1][0]
@@ -29,11 +29,11 @@ def drawOne(path, savePaths=False):
     endpointsx = [path[0][0], path[-1][0]]
     endpointsy = [path[0][1], path[-1][1]]
     pyplot.scatter(endpointsx, endpointsy, c='r')
-    if savePaths: save(name=getPathName(path))
+    save(outDir=outDir, name=getPathName(path))
 
-def drawMany(paths, savePaths=False):
+def drawMany(paths, outDir=None):
     for path in paths:
-        drawOne(path, savePaths)
+        drawOne(path, outDir)
 
 def generateTest():
     path = [
@@ -58,18 +58,19 @@ def generateMany(n=1):
     for i in xrange(n):
         yield generateOne()
 
-def save(outDir='.', name=None):
+def save(outDir=None, name=None):
+    if outDir is None:
+        outDir = '.'
     if name is None:
         import datetime
         name = datetime.datetime.today().strftime('%Y%m%d%H%M%S.%f')
     import os
-    name = '%s.png' % name
+    name = os.path.join(outDir, '%s.png' % name)
     logging.info('saving %s...' % name)
-    name = os.path.join(outDir, name)
     if os.path.isfile(name):
         logging.info('already there')
     else:
-        pyplot.savefig(os.path.join(outDir, name))
+        pyplot.savefig(name)
         logging.info('done')
 
 def main():
@@ -77,9 +78,10 @@ def main():
 
     op = optparse.OptionParser()
     op.add_option('-n', dest='n', type='int', help='how many to generate')
+    op.add_option('--outdir', dest='outdir', help='path to directory to save in')
     options, args = op.parse_args()
 
-    drawMany(paths=generateMany(options.n), savePaths=True)
+    drawMany(paths=generateMany(options.n), outDir=options.outdir)
 
 if __name__ == '__main__':
     main()
