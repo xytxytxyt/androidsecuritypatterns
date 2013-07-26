@@ -62,8 +62,13 @@ def save(outDir='.', name=None):
         name = datetime.datetime.today().strftime('%Y%m%d%H%M%S.%f')
     import os
     name = '%s.png' % name
-    print 'saving %s...' % name
-    pyplot.savefig(os.path.join(outDir, name))
+    print ('saving %s...' % name),
+    name = os.path.join(outDir, name)
+    if os.path.isfile(name):
+        print 'already there'
+    else:
+        pyplot.savefig(os.path.join(outDir, name))
+        print 'done'
 
 def main():
     import optparse
