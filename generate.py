@@ -5,8 +5,12 @@ def refresh():
     pyplot.axis('off')
     pyplot.axis('equal')
 
-    pointsx = [1, 2, 3, 1, 2, 3, 1, 2, 3]
-    pointsy = [1, 1, 1, 2, 2, 2, 3, 3, 3]
+    from pattern.utils import grid
+    pointsx = []
+    pointsy = []
+    for point in grid.points():
+        pointsx.append(point[0])
+        pointsy.append(point[1])
     pyplot.scatter(pointsx, pointsy)
 
 def getPathName(path):
@@ -20,6 +24,9 @@ def drawOne(path, savePaths=False):
         dx = path[i][0] - x
         dy = path[i][1] - y
         pyplot.arrow(x, y, dx, dy, head_width=0.05, head_length=0.1, length_includes_head=True)
+    endpointsx = [path[0][0], path[-1][0]]
+    endpointsy = [path[0][1], path[-1][1]]
+    pyplot.scatter(endpointsx, endpointsy, c='r')
     if savePaths: save(name=getPathName(path))
 
 def drawMany(paths, savePaths=False):
@@ -40,7 +47,10 @@ def generateTest():
     return path
 
 def generateOne():
-    return generateTest()
+    #return generateTest()
+    import pattern.random
+    randomPath = pattern.random.generateOne()
+    return randomPath
 
 def generateMany(n=1):
     for i in xrange(n):
