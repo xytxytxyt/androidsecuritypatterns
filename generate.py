@@ -9,30 +9,51 @@ def refresh():
     pointsy = [1, 1, 1, 2, 2, 2, 3, 3, 3]
     pyplot.scatter(pointsx, pointsy)
 
-def arrow(x, y, dx, dy):
-    pyplot.arrow(x, y, dx, dy, head_width=0.05, head_length=0.1, length_includes_head=True)
+def getPathName(path):
+    return ''.join(['%d%d' % point for point in path])
 
-def generatetest():
-    arrow(1, 3, 1, -1)
-    arrow(2, 2, 1, 1)
-    arrow(3, 3, 0, -1)
-    arrow(3, 2, -1, 1)
-    arrow(2, 3, -1, -1)
-    arrow(1, 2, 1, -1)
-    arrow(2, 1, 1, 0)
+def drawOne(path, savePaths=False):
+    refresh()
+    for i in xrange(1, len(path)):
+        x = path[i-1][0]
+        y = path[i-1][1]
+        dx = path[i][0] - x
+        dy = path[i][1] - y
+        pyplot.arrow(x, y, dx, dy, head_width=0.05, head_length=0.1, length_includes_head=True)
+    if savePaths: save(name=getPathName(path))
 
-def generateone():
-    generatetest()
+def drawMany(paths, savePaths=False):
+    for path in paths:
+        drawOne(path, savePaths)
 
-def generate(n=1):
+def generateTest():
+    path = [
+        (1, 3),
+        (2, 2),
+        (3, 3),
+        (3, 2),
+        (2, 3),
+        (1, 2),
+        (2, 1),
+        (3, 1),
+        ]
+    return path
+
+def generateOne():
+    return generateTest()
+
+def generateMany(n=1):
     for i in xrange(n):
-        refresh()
-        generateone()
-        save()
+        yield generateOne()
 
-def save(outdir='.'):
-    import os, datetime
-    pyplot.savefig(os.path.join(outdir, '%s.png' % datetime.datetime.today().strftime('%Y%m%d%H%M%S.%f')))
+def save(outDir='.', name=None):
+    if name is None:
+        import datetime
+        name = datetime.datetime.today().strftime('%Y%m%d%H%M%S.%f')
+    import os
+    name = '%s.png' % name
+    print 'saving %s...' % name
+    pyplot.savefig(os.path.join(outDir, name))
 
 def main():
     import optparse
@@ -41,7 +62,7 @@ def main():
     op.add_option('-n', dest='n', type='int', help='how many to generate')
     options, args = op.parse_args()
 
-    generate(options.n)
+    drawMany(paths=generateMany(options.n), savePaths=True)
 
 if __name__ == '__main__':
     main()
