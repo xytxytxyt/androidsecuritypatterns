@@ -2,6 +2,7 @@ from utils import grid
 from utils import naiveGeometry as ng
 import logging
 
+
 def getNextPoint(pathSoFar, pointsRemaining):
     currentPoint = pathSoFar[-1]
     while True:
@@ -15,6 +16,7 @@ def getNextPoint(pathSoFar, pointsRemaining):
 
         if all([not ng.pointIsBetweenOnLine(point, currentPoint, nextPoint) for point in pointsAfterNextPoint]):
             return nextPoint
+
 
 def generateOne(source=None):
     if source is None:

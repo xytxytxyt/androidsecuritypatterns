@@ -1,6 +1,7 @@
 import unittest
 import naiveGeometry as ng
 
+
 class naiveGeometryTest(unittest.TestCase):
     def testGetSlope(self):
         self.assertEqual(ng.getSlope((1, 1), (2, 2)), 1)
@@ -36,6 +37,7 @@ class naiveGeometryTest(unittest.TestCase):
 
         self.assertFalse(ng.pointIsBetweenOnLine((1, 3), (3, 2), (3, 3)))
         self.assertFalse(ng.pointIsBetweenOnLine((1, 3), (3, 3), (3, 2)))
+
 
 if __name__ == '__main__':
     unittest.main()
