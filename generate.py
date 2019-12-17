@@ -24,7 +24,7 @@ def getPathName(path):
 
 def drawOne(path, outDir=None):
     refresh()
-    for i in xrange(1, len(path)):
+    for i in range(1, len(path)):
         x = path[i - 1][0]
         y = path[i - 1][1]
         dx = path[i][0] - x
@@ -68,7 +68,7 @@ def generateOne():
 
 
 def generateMany(n=1):
-    for i in xrange(n):
+    for i in range(n):
         yield generateOne()
 
 

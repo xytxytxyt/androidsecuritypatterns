@@ -1,5 +1,5 @@
-from utils import grid
-from utils import naiveGeometry as ng
+import pattern.utils.grid as grid
+import pattern.utils.naiveGeometry as ng
 import logging
 
 
